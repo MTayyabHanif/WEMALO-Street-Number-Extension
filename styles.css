@@ -1,0 +1,30 @@
+#billing_street_number_field {
+    -webkit-flex-basis: 100% !important;
+    -ms-flex-preferred-size: 100% !important;
+    flex-basis: 30% !important;
+    width: 30% !important;
+    float:  left !important;
+    clear:  none !important;
+}
+
+
+#billing_address_1_field {
+    -webkit-flex-basis: 100% !important;
+    -ms-flex-preferred-size: 100% !important;
+    flex-basis: 65% !important;
+    width: 65% !important;
+    float: left !important;
+    clear: none !important;
+    margin-right: 5% !important;
+}
+@media screen and (max-width: 380px) {
+
+    .woocommerce-checkout div#billing_street_number_field,.woocommerce-checkout #billing_address_1_field,.woocommerce-address-fields div#billing_street_number_field,.woocommerce-address-fields #billing_address_1_field {
+        -webkit-flex-basis: 100% !important;
+        -ms-flex-preferred-size: 100% !important;
+        flex-basis: 100% !important;
+        margin-right: 0 !important;
+        width: 100%% !important;
+        clear: both !important;
+    }
+}

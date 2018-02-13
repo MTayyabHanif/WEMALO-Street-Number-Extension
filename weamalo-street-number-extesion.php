@@ -32,8 +32,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  **/
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 
-    add_filter( 'woocommerce_default_address_fields', 'woo_new_default_address_fields' );
 
+
+    function wpse_load_plugin_css() {
+        $plugin_url = plugin_dir_url( __FILE__ );
+
+        wp_enqueue_style( 'woo_street_field', $plugin_url . '/styles.css' );
+    }
+    add_action( 'wp_enqueue_scripts', 'wpse_load_plugin_css' );
+
+
+    add_filter( 'woocommerce_default_address_fields', 'woo_new_default_address_fields' );
     function woo_new_default_address_fields( $fields ) {
 
         $fields['street_number'] = array(
@@ -41,6 +50,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
             'label' => __( 'Street number', 'woocommerce' ),
             'type' => 'text',
             'required'  => true,
+            'placeholder' => 'Street Number',
             'class' => array( 'form-row-wide street_number', 'update_totals_on_change' ),
 
         );
@@ -69,7 +79,13 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
         return $fields;
 
     }
+    add_filter( 'woocommerce_default_address_fields', 'custom_override_default_checkout_fields', 10, 1 );
+    function custom_override_default_checkout_fields( $address_fields ) {
+        $address_fields['address_1']['label'] = __( 'Home Address', 'woocommerce' );
+        $address_fields['address_1']['placeholder'] = __( 'Your home address', 'woocommerce' );
 
+        return $address_fields;
+    }
     add_filter( 'woocommerce_order_formatted_billing_address' , 'woo_custom_order_formatted_billing_address', 10, 2 );
     add_filter( 'wc_get_account_formatted_address' , 'woo_custom_order_formatted_billing_address', 10, 2 );
 
@@ -113,7 +129,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
     add_filter( 'woocommerce_my_account_my_address_formatted_address', 'custom_my_account_my_address_formatted_address', 10, 3 );
     function custom_my_account_my_address_formatted_address( $fields, $customer_id, $type ) {
         // if ( $type == 'billing' ) {
-            $fields['street_number'] = get_user_meta($customer_id, "billing_street_number")[0];
+        $fields['street_number'] = get_user_meta($customer_id, "billing_street_number")[0];
         // }
         return $fields;
     }
